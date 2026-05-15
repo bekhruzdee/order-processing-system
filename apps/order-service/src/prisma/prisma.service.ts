@@ -4,7 +4,6 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { config as loadEnv } from 'dotenv';
 import { PrismaClient } from '../generated/prisma';
-// import { PrismaClient } from '@prisma/client';
 
 function loadServiceEnv() {
   const envPaths = [
