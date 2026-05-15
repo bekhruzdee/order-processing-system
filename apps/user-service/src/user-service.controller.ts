@@ -1,22 +1,28 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
 import { UserService } from './user-service.service';
 
-@Controller('users')
+@Controller()
 export class UserServiceController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() body: any) {
+  @MessagePattern('create_user')
+  create(body: any) {
     return this.userService.createUser(body);
   }
 
-  @Get()
+  @MessagePattern('get_users')
   findAll() {
     return this.userService.getUsers();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.getUserById(Number(id));
+  @MessagePattern('get_user')
+  findOne(data: any) {
+    return this.userService.getUserById(data.id);
+  }
+
+  @MessagePattern('delete_user')
+  remove(data: any) {
+    return this.userService.deleteUser(data.id);
   }
 }

@@ -1,22 +1,60 @@
-import { Injectable } from '@nestjs/common';
+// import { Injectable } from '@nestjs/common';
+// import { PrismaService } from './prisma/prisma.service';
+
+// @Injectable()
+// export class UserService {
+//   constructor(private prisma: PrismaService) {}
+
+//   createUser(data: any) {
+//     return this.prisma.user.create({
+//       data,
+//     });
+//   }
+
+//   getUsers() {
+//     return this.prisma.user.findMany();
+//   }
+
+//   getUserById(id: number) {
+//     return this.prisma.user.findUnique({
+//       where: { id },
+//     });
+//   }
+// }
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from './prisma/prisma.service';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
-  createUser(data: any) {
+  async createUser(data: { name: string; email: string }) {
+    const { name, email } = data;
+
+    if (!name) throw new BadRequestException('name is required');
+    if (!email) throw new BadRequestException('email is required');
+
     return this.prisma.user.create({
-      data,
+      data: { name, email },
     });
   }
 
-  getUsers() {
+  async getUsers() {
     return this.prisma.user.findMany();
   }
 
-  getUserById(id: number) {
-    return this.prisma.user.findUnique({
+  async getUserById(id: number) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    return user;
+  }
+
+  async deleteUser(id: number) {
+    return this.prisma.user.delete({
       where: { id },
     });
   }
