@@ -1,17 +1,12 @@
-// import { Controller, Get } from '@nestjs/common';
-// import { ApiGatewayService } from './api-gateway.service';
-
-// @Controller()
-// export class ApiGatewayController {
-//   constructor(private readonly apiGatewayService: ApiGatewayService) {}
-
-//   @Get()
-//   getHello(): string {
-//     return this.apiGatewayService.getHello();
-//   }
-// }
-
-import { Body, Controller, Delete, Get, Inject, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Inject,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
 @Controller()
