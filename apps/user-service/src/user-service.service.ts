@@ -69,7 +69,12 @@ export class UserService {
   }
 
   async getUsers() {
-    return this.prisma.user.findMany();
+    return this.prisma.user.findMany({
+      skip: 0,
+      take: 10000,
+      select: { id: true, name: true, email: true },
+      orderBy: { id: 'desc' },
+    });
   }
 
   async getUserById(id: number) {
