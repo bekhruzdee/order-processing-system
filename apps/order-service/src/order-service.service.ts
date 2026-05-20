@@ -69,8 +69,17 @@ export class OrderService {
     }
   }
 
-  async getOrders() {
-    return this.prisma.order.findMany();
+  // Return a limited page of orders by default to avoid fetching millions of rows.
+  // Callers can pass `take` and `skip` when needed (via the message payload).
+  async getOrders(options?: { take?: number; skip?: number }) {
+    const take = options?.take ?? 100
+    const skip = options?.skip ?? 0
+
+    return this.prisma.order.findMany({
+      take,
+      skip,
+      orderBy: { createdAt: 'desc' },
+    })
   }
 
   async getOrderById(id: number) {

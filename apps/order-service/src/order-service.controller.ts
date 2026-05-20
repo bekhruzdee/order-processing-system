@@ -12,8 +12,10 @@ export class OrderServiceController {
   }
 
   @MessagePattern('get_orders')
-  findAll() {
-    return this.orderService.getOrders();
+  findAll(data?: any) {
+    // allow callers to pass { options: { take, skip } }
+    const options = data?.options
+    return this.orderService.getOrders(options)
   }
 
   @MessagePattern('get_order')
